@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Gryptocram</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="description" content="A working example of gryptocram.js, a simple JavaScript library for adding cryptogram puzzles to your webpage." />
+<link type="text/css" rel="stylesheet" href="gryptocram.css" />
+<style>
+h1 {
+	text-align: center;
+	padding: 20px;
+}
+
+.grypt-host {
+	border: 1px solid #EEE;
+	padding: 15px;
+}
+
+header {
+	width: 100%;
+	text-align: center;
+}
+
+@media all and (max-width: 640px) {
+	h1 {
+		font-size: 20px;
+		padding: 8px;
+	}
+}
+
+@media all and (max-width: 360px) {
+	h1 {
+		font-size: 14px;
+		padding: 2px;
+	}
+}
+</style>
+</head>
+<body>
+	<header>
+		<h1>
+			Gryptocram Example
+		</h1>
+		<span>
+			Before coding with the library, give this puzzle a try.
+		</span>
+	</header>
+	<br/>
+	<main>
+	
+		<!-- The host can be any block-level element where we want to store our puzzle. Add the "grypt-host" class to the element to use our default CSS as a base for the styling. -->
+		<div class="grypt-host">
+		</div>
+	
+	</main>
+<script type="text/javascript" src="gryptocram.min.js"></script>
+<script>
+
+// The final answer to the puzzle.
+var myAnswer = "IF I CAN DO IT, YOU CAN DO IT.",
+
+	// The encoded version that you want to show in the puzzle.
+	myEncodedAnswer = "ZU Z MCF HP ZQ, EPK MCF HP ZQ.",
+
+	// Explicit letter encoding map. Not required if an encoded answer is provided.
+	/*
+	myCodeMap = {
+		"A" : "C",
+		"B" : "Y",
+		"C" : "M",
+		"D" : "H",
+		"E" : "X",
+		"F" : "U",
+		"G" : "W",
+		"H" : "V",
+		"I" : "Z",
+		"J" : "T",
+		"K" : "S",
+		"L" : "R",
+		"M" : "O",
+		"N" : "F",
+		"O" : "P",
+		"P" : "N",
+		"Q" : "L",
+		"R" : "J",
+		"S" : "I",
+		"T" : "Q",
+		"U" : "K",
+		"V" : "G",
+		"W" : "D",
+		"X" : "B",
+		"Y" : "E",
+		"Z" : "A"
+	},
+	*/
+	
+	// Some way to reference the Gryptocram object later, if we desire.
+	grypt = null;
+
+// Initialize the puzzle after the page loads.
+onload = function() {
+
+	// Create a Gryptocram instance.
+	grypt = new Gryptocram({
+		answer: myAnswer,
+		encodedAnswer: myEncodedAnswer,
+		//encoding: myCodeMap,  // This is an optional parameter that could be used instead of encodedAnswer()
+		host: document.querySelector(".grypt-host")
+	});
+};
+</script>
+</body>
+</html>
