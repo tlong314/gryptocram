@@ -9,7 +9,7 @@
 }
 
 .grypt-host {
-	width: 100%;	
+	display: block;
 }
 
 .grypt-host input.letterInputs {
