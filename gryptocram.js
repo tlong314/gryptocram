@@ -1,10 +1,11 @@
 /**
  * @title Gryptocram.js
  * @file A small JavaScript library for easily creating responsive cryptogram puzzles.
- * @author Tim S. Long
+ * @author Tim Scott Long
  * @contact contact@timlongcreative.com
+ * @copyright Tim Scott Long 2016
  * @version 1.1.0
- * @modified July 21, 2016
+ * @modified August 3, 2016
  * @license Available for use under the MIT License
  */
 
