@@ -18,9 +18,9 @@
 		heldText = "",
 		hostingElement = document.body,
 		solvedOnce = false,
+		// Create a specific prefix for local storage variables (based on the webpage URL), to avoid conflicts with others on the site.
 		prefix = window.location.pathname.substr(window.location.pathname.lastIndexOf("/")+1, window.location.pathname.lastIndexOf(".html")-1-window.location.pathname.lastIndexOf("/")) + "-",
 		noKeys = "KeyboardEvent" in window ? false : true,
-
 		defaults = {
 			answer: "",
 			encodedAnswer: "",
@@ -68,12 +68,12 @@
 	 * @return {object} A map from each starting letter to the encoded version of that letter.
 	 */
 	Gryptocram.prototype.getEncodingFromString = function(str) {
-			var encodedObj = new Object();
-			for(var i = 0, len = answerArr.length; i < len; i++) {
-				encodedObj[answerArr[i]] = str[i];
-			}
+		var encodedObj = new Object();
+		for(var i = 0, len = answerArr.length; i < len; i++) {
+			encodedObj[answerArr[i]] = str[i];
+		}
 
-			return encodedObj;
+		return encodedObj;
 	}; // End getEncodingFromString()
 	
 	/**
@@ -81,8 +81,8 @@
 	 * @return {object} Current Gryptocram instance
 	 */
 	Gryptocram.prototype.renderBoard = function() {
-		var words = answer.split(/_|\s/g);
-		var lInputs = [];
+		var words = answer.split(/_|\s/g),
+			lInputs = [];
 
 		for(var i = 0, len = words.length; i < len; i++) {
 			var letters = words[i].split(""),
@@ -90,13 +90,13 @@
 			wDiv.className = "word_div";
 			
 			for(var j = 0, jLen = letters.length; j < jLen; j++) {
-				var lDiv = document.createElement("DIV");
+				var lDiv = document.createElement("DIV"),
+					spn = document.createElement("SPAN"),
+					br = document.createElement("BR"),
+					lInput = document.createElement("INPUT"),
+					tN = null;
+
 				lDiv.className = "letter_div";
-				
-				var spn = document.createElement("SPAN");
-				
-				var br = document.createElement("BR");
-				var lInput = document.createElement("INPUT");
 				lInput.type = "text";
 				lInput.size = "1";
 				lInput.maxLength = "1";
@@ -104,7 +104,6 @@
 				lInput.className = "letterInputs " + "encoded" + letters[j];
 				lInputs.push(lInput);
 
-				var tN;
 				if(letters[j].match(/[A-Za-z]{1}/) !== null) {
 					lInput.id = "letterInput" + inputIds;
 					inputIds++;
@@ -188,8 +187,9 @@
 		if(document.getElementById(id) != null) {
 			document.getElementById(id).addEventListener("click", Gryptocram.prototype.clearEntries.bind(Gryptocram.prototype), false);
 		}
-		else
+		else {
 			setTimeout(function() {handleClearBtn(id)}, 200);
+		}
 	} // End handleClearBtn()
 	
 	/**
@@ -201,8 +201,9 @@
 		if(document.getElementById(id) != null) {
 			document.getElementById(id).addEventListener("click", Gryptocram.prototype.solvePuzzle.bind(Gryptocram.prototype), false);
 		}
-		else
+		else {
 			setTimeout(function() {handleShowBtn(id)}, 200);
+		}
 	} // End handleShowBtn()
 
 	/**
@@ -217,7 +218,7 @@
 			equalLetters[i].value = v.toUpperCase();
 		}
 	
-	Gryptocram.prototype.savePuzzle();
+		Gryptocram.prototype.savePuzzle();
 
 		// DEL, BKSP, TAB, Arrows, etc. shouldn't advance the position, but letters should.
 		if((e.keyCode >= 65 && e.keyCode <= 90) || e.keyCode == 32 || e.keyCode == 13 || e.keyCode == 39) {
@@ -274,8 +275,9 @@
 	Gryptocram.prototype.solvePuzzle = function() {
 		var inputs = hostingElement.querySelectorAll("input[type='text']");
 		
-		for(var i = 0, len = inputs.length; i < len; i++)
+		for(var i = 0, len = inputs.length; i < len; i++) {
 			inputs[i].value = answerArr[i];
+		}
 		
 		this.endPuzzle();
 		//Should we call savePuzzle()? I think it would be best not to.
@@ -290,8 +292,7 @@
 	Gryptocram.prototype.isComplete = function() {
 		var inputs = hostingElement.querySelectorAll("input[type='text']");
 		
-		for(var i = 0, len = inputs.length; i < len; i++)
-		{
+		for(var i = 0, len = inputs.length; i < len; i++) {
 			 if(inputs[i].value != answerArr[i])
 				 return false;
 		}
@@ -368,7 +369,7 @@
 		for(var i = 0, len = letterInputs.length; i < len; i++)
 			letterInputs[i].value = "";
 		
-	// Erase saved values
+		// Erase saved values
 		for(i = 0, len = answerArr.length; i < len; i++)
 			localStorage.setItem(prefix + "enteredLetters[" + i + "]", "");
 		
@@ -404,11 +405,11 @@
 	Gryptocram.prototype.savePuzzle = function() {
 		var inputs = hostingElement.querySelectorAll("input[type='text']");
 		
-	if(window.localStorage) {
+		if(window.localStorage) {
 			for(i = 0, len = answerArr.length; i < len; i++)
 				localStorage.setItem(prefix + "enteredLetters[" + i + "]", inputs[i].value);
 	}
-	
+
 		return this;
 	}; // End savePuzzle()
 	
