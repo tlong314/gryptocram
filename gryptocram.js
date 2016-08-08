@@ -307,7 +307,6 @@
 		}
 		
 		this.endPuzzle();
-		//Should we call savePuzzle()? I think it would be best not to.
 		
 		return this;
 	}; // End solvePuzzle()
