@@ -24,14 +24,41 @@
 		defaults = {
 			answer: "",
 			encodedAnswer: "",
-			codeMap: "",
+			encoding: {
+				"A" : "C",
+				"B" : "Y",
+				"C" : "M",
+				"D" : "H",
+				"E" : "X",
+				"F" : "U",
+				"G" : "W",
+				"H" : "V",
+				"I" : "Z",
+				"J" : "T",
+				"K" : "S",
+				"L" : "R",
+				"M" : "O",
+				"N" : "F",
+				"O" : "P",
+				"P" : "N",
+				"Q" : "L",
+				"R" : "J",
+				"S" : "I",
+				"T" : "Q",
+				"U" : "K",
+				"V" : "G",
+				"W" : "D",
+				"X" : "B",
+				"Y" : "E",
+				"Z" : "A"
+			},
 			host: hostingElement
 		};
 
 	/**
 	 * @description The constructor function for our library to build on.
-	 * @param {object} opts - An object of parameters passed in when creating an instance, such as the puzzle answer and an encoded version.
-	 * @return {object} Current Gryptocram instance
+	 * @param {Object} opts - An object of parameters passed in when creating an instance, such as the puzzle answer and an encoded version.
+	 * @returns {Object} Current Gryptocram instance
 	 */
 	var Gryptocram = function(opts) {
 		// Keep only the explicitly defined options
@@ -40,7 +67,7 @@
 		}
 
 		hostingElement = opts.host;
-		answer = opts.answer;
+		answer = opts.answer.toUpperCase();
 		answerArr = answer.replace(/[^A-Za-z]/g, "").split(""); // We are assuming only letters as part of the encoding.
 
 		// Import or define the encoding map.
@@ -65,7 +92,7 @@
 	/**
 	 * @description Uses the encoded answer provided to create an explicit mapping.
 	 * @param {string} str - The encoded answer.
-	 * @return {object} A map from each starting letter to the encoded version of that letter.
+	 * @returns {Object} A map from each starting letter to the encoded version of that letter.
 	 */
 	Gryptocram.prototype.getEncodingFromString = function(str) {
 		var encodedObj = new Object();
@@ -78,7 +105,7 @@
 	
 	/**
 	 * @description Create the DOM elements that will make up the game board, and attach to the host element.
-	 * @return {object} Current Gryptocram instance
+	 * @returns {Object} Current Gryptocram instance
 	 */
 	Gryptocram.prototype.renderBoard = function() {
 		var words = answer.split(/_|\s/g),
@@ -238,7 +265,7 @@
 	
 	/**
 	 * @description Advances the cursor position to the next input in the puzzle.
-	 * @return {object} The current Gryptocram instance.
+	 * @returns {Object} The current Gryptocram instance.
 	 */
 	Gryptocram.prototype.advancePosition = function() {
 		if((parseInt((this.id).substr(11),10)+1) == inputIds) {
@@ -254,7 +281,7 @@
 	
 	/**
 	 * @description Moves the cursor position to the previous input in the puzzle.
-	 * @return {object} The current Gryptocram instance.
+	 * @returns {Object} The current Gryptocram instance.
 	 */
 	Gryptocram.prototype.reversePosition = function() {
 		if((parseInt((this.id).substr(11),10)) == 0) {
@@ -270,7 +297,7 @@
 	
 	/**
 	 * @description Populates all inputs with the correct decoded letters.
-	 * @return {object} The current Gryptocram instance.
+	 * @returns {Object} The current Gryptocram instance.
 	 */
 	Gryptocram.prototype.solvePuzzle = function() {
 		var inputs = hostingElement.querySelectorAll("input[type='text']");
@@ -287,7 +314,7 @@
 	
 	/**
 	 * @description Checks if all of the inputs have been populated with the correct decoded letters.
-	 * @return {boolean}
+	 * @returns {boolean}
 	 */
 	Gryptocram.prototype.isComplete = function() {
 		var inputs = hostingElement.querySelectorAll("input[type='text']");
@@ -302,7 +329,7 @@
 	
 	/**
 	 * @description Creates visual effects indicating that the puzzles has been solved.
-	 * @return {object} The current Gryptocram instance.
+	 * @returns {Object} The current Gryptocram instance.
 	 */
 	Gryptocram.prototype.endPuzzle = function() {
 		var inputs = hostingElement.querySelectorAll("input[type='text']");
@@ -332,7 +359,7 @@
 	
 	/**
 	 * @description Remove visual effects created by the endPuzzle function.
-	 * @return {object} The current Gryptocram instance.
+	 * @returns {Object} The current Gryptocram instance.
 	 */
 	Gryptocram.prototype.clearHighlights = function() {
 		var inputs = hostingElement.querySelectorAll("input[type='text']");
@@ -360,7 +387,7 @@
 	
 	/**
 	 * @description Erase current entries from all inputs in the puzzle, and reset the saved values.
-	 * @return {object} The current Gryptocram instance.
+	 * @returns {Object} The current Gryptocram instance.
 	 */
 	Gryptocram.prototype.clearEntries = function() {
 		var letterInputs = hostingElement.querySelectorAll("input[type='text']");
@@ -380,7 +407,7 @@
 	
 	/**
 	 * @description Populates puzzle inputs with the current saved version from the browser's local storage.
-	 * @return {object} The current Gryptocram instance.
+	 * @returns {Object} The current Gryptocram instance.
 	 */
 	Gryptocram.prototype.loadPuzzle = function() {
 		var inputs = hostingElement.querySelectorAll("input[type='text']");
@@ -400,7 +427,7 @@
 	
 	/**
 	 * @description Save the input values in their current state to the browser's local storage.
-	 * @return {object} The current Gryptocram instance.
+	 * @returns {Object} The current Gryptocram instance.
 	 */
 	Gryptocram.prototype.savePuzzle = function() {
 		var inputs = hostingElement.querySelectorAll("input[type='text']");
