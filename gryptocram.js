@@ -1,14 +1,9 @@
 /**
- * @title Gryptocram.js
- * @file A small JavaScript library for easily creating responsive cryptogram puzzles.
- * @author Tim Scott Long
- * @contact contact@timlongcreative.com
- * @copyright Tim Scott Long 2016
- * @version 1.1.0
- * @modified August 3, 2016
+ * @overview A small JavaScript library for easily creating responsive cryptogram puzzles.
+ * @author Tim Scott Long (tim@timlongcreative.com)
+ * @copyright Tim Scott Long 2017
  * @license Available for use under the MIT License
  */
-
 ;var Gryptocram = (function() {
 	var encoding = {},
 		decoding = {},
@@ -56,12 +51,16 @@
 		};
 
 	/**
-	 * @description The constructor function for our library to build on.
+	 * @description The constructor function for the library to build on.
 	 * @param {Object} opts - An object of parameters passed in when creating an instance, such as the puzzle answer and an encoded version.
-	 * @returns {Object} Current Gryptocram instance
+	 * @param {string} opts.answer - The answer to the puzzle.
+	 * @param {string} [opts.encodedAnswer] - A string version of the encoded answer.
+	 * @param {Object} [opts.encoding] - An object with each property has a key as a letter and a value as the letter that the key letter should be mapped to.
+	 * @param {Object} [opts.host] - An HTML element in the DOM that should be used to hold the puzzle. Defaults to document.body
+	 * @returns {Object} The current Gryptocram instance.
 	 */
 	var Gryptocram = function(opts) {
-		// Keep only the explicitly defined options
+ 		// Keep only the explicitly defined options
 		for (var x in defaults) {
 			opts[x] = opts[x] || defaults[x];
 		}
@@ -85,7 +84,7 @@
 		this.loadPuzzle();
 
 		return this;
-	}; // End the Gryptocram constructor.
+	};
 
 	Gryptocram.prototype.constructor = Gryptocram;
 
@@ -101,7 +100,7 @@
 		}
 
 		return encodedObj;
-	}; // End getEncodingFromString()
+	}; 
 	
 	/**
 	 * @description Create the DOM elements that will make up the game board, and attach to the host element.
@@ -177,21 +176,21 @@
 
 		var i = lInputs.length;
 		while(i--) {
-			handleInput(lInputs[i].id);
+			handleInput(lInputs[i].id, this);
 		}
 
-		handleClearBtn("clearBtn");
-		handleShowBtn("showBtn");
+		handleClearBtn("clearBtn", this);
+		handleShowBtn("showBtn", this);
 
 		return this;
-	}; // End renderBoard()
+	}; 
 
 	/**
-	 * @description Adds the input/keyup handler to an input element after it's drawn.
-	 * @param {string} id - The ID attribute of the element receiving the handler.
-	 * @notes This function will continue to call itself until the element is created and added to the DOM (at which point the handler can be added to it).
+	 * @description Adds the input/keyup handler to an input element, once the element has been added to the DOM.
+	 * @param {string} id - The ID attribute of the HTML element receiving the handler.
+	 * @param {Object} self - The current Gryptocram instance.
 	 */
-	var handleInput = function(id) {
+	var handleInput = function(id, self) {
 		if(document.getElementById(id) != null)
 		{
 			if(noKeys) {
@@ -202,41 +201,41 @@
 			}
 		}
 		else
-			setTimeout(function() {handleInput(id);}, 200);
-	}; // End handleInput()
+			setTimeout(function() {handleInput(id, self);}, 200);
+	}; 
 	
 	/**
-	 * @description Adds the event handler to the Start Over button.
-	 * @param {string} id - The ID attribute of the element receiving the handler.
-	 * @notes This function will continue to call itself until the element is created and added to the DOM (at which point the handler can be added to it).
+	 * @description Adds the event handler to the Start Over button, once the button has been added to the DOM..
+	 * @param {string} id - The ID attribute of the HTML element receiving the handler.
+	 * @param {Object} self - The current Gryptocram instance.
 	 */
-	var handleClearBtn = function(id) {
+	var handleClearBtn = function(id, self) {
 		if(document.getElementById(id) != null) {
-			document.getElementById(id).addEventListener("click", Gryptocram.prototype.clearEntries.bind(Gryptocram.prototype), false);
+			document.getElementById(id).addEventListener("click", self.clearEntries.bind(self), false);
 		}
 		else {
-			setTimeout(function() {handleClearBtn(id)}, 200);
+			setTimeout(function() {handleClearBtn(id, self)}, 200);
 		}
-	} // End handleClearBtn()
+	};
 	
 	/**
-	 * @description Adds the event handler to the See Answer button.
+	 * @description Adds the event handler to the See Answer button, once the button has been added to the DOM.
 	 * @param {string} id - The ID attribute of the element receiving the handler.
-	 * @notes This function will continue to call itself until the element is created and added to the DOM (at which point the handler can be added to it).
+	 * @param {Object} self - The current Gryptocram instance.
 	 */
-	var handleShowBtn = function(id) {
+	var handleShowBtn = function(id, self) {
 		if(document.getElementById(id) != null) {
-			document.getElementById(id).addEventListener("click", Gryptocram.prototype.solvePuzzle.bind(Gryptocram.prototype), false);
+			document.getElementById(id).addEventListener("click", self.solvePuzzle.bind(self), false);
 		}
 		else {
-			setTimeout(function() {handleShowBtn(id)}, 200);
+			setTimeout(function() {handleShowBtn(id, self)}, 200);
 		}
-	} // End handleShowBtn()
+	};
 
 	/**
 	 * @description Copies the entered letter into every other input with the same "code letter".
-	 * @param {event} e - The keyUp event bound to an input element that triggered this handler.
-	 */ 
+	 * @param {Object} e - The keyup event bound to an input element that triggered this handler.
+	 */
 	var keyUpHandler = function(e) {
 		var v = this.value,
 		equalLetters = document.querySelectorAll("." + this.className.split(" ")[1]);
@@ -261,7 +260,7 @@
 			Gryptocram.prototype.clearHighlights();
 			solvedOnce = false;			
 		}
-	}; // End keyUpHandler()
+	}; 
 	
 	/**
 	 * @description Advances the cursor position to the next input in the puzzle.
@@ -277,7 +276,7 @@
 		}
 		
 		return this;
-	}; // End advancePosition()
+	}; 
 	
 	/**
 	 * @description Moves the cursor position to the previous input in the puzzle.
@@ -293,7 +292,7 @@
 		}
 		
 		return this;
-	}; // End reversePosition()
+	}; 
 	
 	/**
 	 * @description Populates all inputs with the correct decoded letters.
@@ -309,7 +308,7 @@
 		this.endPuzzle();
 		
 		return this;
-	}; // End solvePuzzle()
+	}; 
 	
 	/**
 	 * @description Checks if all of the inputs have been populated with the correct decoded letters.
@@ -324,7 +323,7 @@
 		}
 		
 		return true;
-	}; // End isComplete()
+	}; 
 	
 	/**
 	 * @description Creates visual effects indicating that the puzzles has been solved.
@@ -354,7 +353,7 @@
 		document.getElementById("showBtn").disabled = true;
 		
 		return this;
-	}; // End endPuzzle()
+	}; 
 	
 	/**
 	 * @description Remove visual effects created by the endPuzzle function.
@@ -382,7 +381,7 @@
 		document.getElementById("showBtn").disabled = false;
 		
 		return this;
-	}; // End clearHighlights()
+	}; 
 	
 	/**
 	 * @description Erase current entries from all inputs in the puzzle, and reset the saved values.
@@ -402,7 +401,7 @@
 		this.clearHighlights();
 		
 		return this;
-	}; // End clearEntries()
+	}; 
 	
 	/**
 	 * @description Populates puzzle inputs with the current saved version from the browser's local storage.
@@ -422,7 +421,7 @@
 		}
 		
 		return this;
-	}; // End loadPuzzle()
+	}; 
 	
 	/**
 	 * @description Save the input values in their current state to the browser's local storage.
@@ -437,7 +436,7 @@
 	}
 
 		return this;
-	}; // End savePuzzle()
+	}; 
 	
 	// Expose the constructor
 	return Gryptocram;
