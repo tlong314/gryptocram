@@ -66,6 +66,11 @@
 		}
 
 		hostingElement = opts.host;
+
+		if(!hostingElement.classList.contains("grypt-host")) {
+			hostingElement.classList.add("grypt-host");
+		}
+
 		answer = opts.answer.toUpperCase();
 		answerArr = answer.replace(/[^A-Za-z]/g, "").split(""); // We are assuming only letters as part of the encoding.
 
